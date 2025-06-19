@@ -1,0 +1,16 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjp.mapper.pet.CaseRecordMapper">
+    <select id="findAll" parameterType="Long" resultType="com.fjp.pojo.dto.pet.CaseRecordDTO">
+        select case_record.id,doctor.name doctorName,description, case_record.add_time, case_record.update_time
+        from case_record, doctor, pet
+        where case_record.pet_id = pet.id and case_record.doctor_id = doctor.id
+        and case_record.pet_id = #{id}
+    </select>
+
+    <update id="updateCase" parameterType="com.fjp.pojo.dto.pet.AddCaseRecordDTO">
+        update case_record set doctor_id=#{doctorId},description=#{description}
+        where id=#{id}
+    </update>
+</mapper>

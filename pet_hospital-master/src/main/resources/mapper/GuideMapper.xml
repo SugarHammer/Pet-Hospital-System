@@ -1,0 +1,53 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjp.mapper.guide.GuideMapper">
+
+    <select id="selectById" parameterType="Long" resultType="com.fjp.pojo.entity.guide.Guide">
+        select description
+        from guide
+        where Id = #{Id};
+    </select>
+
+    <select id="selectByGuideQuery" parameterType="com.fjp.pojo.entity.guide.Guide"
+            resultType="com.fjp.pojo.dto.guide.GuideDTO">
+        select guide.id,user.id userId,user.username,title,description,guide.add_time,guide.update_time
+        from guide join user on guide.user_id=user.id
+        where 1=1
+        <if test="id != null and id != ''">
+            and guide.id = #{id}
+        </if>
+
+        <if test="userId !=null and userId !=''">
+            and user_id = #{userId}
+        </if>
+
+        <if test="addTime !=null">
+            and date(guide.add_time) = #{addTime}
+        </if>
+
+        <if test="description !=null and description !=''">
+            and description like '%${description}%'
+        </if>
+
+        <if test="title !=null and title !=''">
+            and title like '%${title}%'
+        </if>
+    </select>
+
+    <insert id="addGuide" parameterType="com.fjp.pojo.entity.guide.Guide">
+        insert into guide(id, user_id, title, description, add_time, update_time)
+            value (#{id},#{userId},#{title},#{description},#{addTime},#{updateTime})
+    </insert>
+
+    <delete id="deleteGuide" parameterType="Long">
+        delete from guide
+        where id=#{id}
+    </delete>
+
+    <update id="updateGuide" parameterType="com.fjp.pojo.entity.guide.Guide">
+        update guide set title=#{title},description=#{description}
+        where id=#{id}
+    </update>
+
+</mapper>

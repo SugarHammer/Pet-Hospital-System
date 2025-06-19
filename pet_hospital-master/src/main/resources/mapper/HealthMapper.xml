@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fjp.mapper.doctor.HealthMapper">
+
+    <select id="findByUserNameOrPetName" resultType="com.fjp.pojo.entity.doctor.Health">
+        select health.*
+        from health,
+        pet,
+        user
+        where health.user_id = user.id
+        and health.pet_id = pet.id
+        and (
+        user.name like concat("%", #{userName}, "%")
+        or pet.name like concat("%", #{petName}, "%"))
+        <if test="userId != null">
+            and pet.user_id = #{userId}
+        </if>
+        order by add_time desc
+    </select>
+
+</mapper>

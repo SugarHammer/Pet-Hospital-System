@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fjp.mapper.basedata.FormMapper">
+
+    <select id="petPercentage" resultType="java.util.Map">
+        select species as name, count(0) as y from pet group by species
+    </select>
+
+    <select id="appointmentCount" resultType="java.util.Map">
+        select appoint_date as name, count(0) as y from appointment where date_add(curdate(), INTERVAL 7 DAY) >= date(appoint_date) and date(appoint_date) > curdate() group by appoint_date order by appoint_date;
+    </select>
+
+    <select id="healthCount" resultType="java.util.Map">
+        SELECT count(if(health_status = '健康', true, null)) as healthy,
+        count(if(health_status = '不健康', true, null)) as unhealthy,
+        count(if(health_status = '良好', true, null)) as good,
+        date(add_time) as name FROM health
+        where date_sub(curdate(), INTERVAL 7 DAY) &lt; date(add_time) and date(add_time) &lt;= curdate() group by date(add_time) order by date(add_time)
+    </select>
+
+</mapper>

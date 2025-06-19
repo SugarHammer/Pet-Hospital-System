@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fjp.mapper.basedata.ResourceMapper">
+
+    <select id="queryByUserId" resultType="com.fjp.pojo.entity.basedata.Resource" parameterType="Long">
+        select resource.*
+        from user, user_has_role, role, role_has_resource, resource
+        where user.id = user_has_role.user_id and role.id = user_has_role.role_id
+        and role.id = role_has_resource.role_id and role_has_resource.resource_id = resource.id
+        and user.id = #{userId}
+    </select>
+
+    <select id="queryByRoleId" resultType="com.fjp.pojo.entity.basedata.Resource" parameterType="Long">
+        select resource.*
+        from role, role_has_resource, resource
+        where role.id = role_has_resource.role_id and role_has_resource.resource_id = resource.id
+          and role.id = #{roleId}
+    </select>
+
+</mapper>

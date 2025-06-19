@@ -1,0 +1,13 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fjp.mapper.basedata.RoleMapper">
+
+    <select id="queryByUserId" resultType="com.fjp.pojo.entity.basedata.Role" parameterType="Long">
+        select role.* from user, user_has_role, role
+        where user.id = user_has_role.user_id and user_has_role.role_id = role.id
+        and user.id = #{userId}
+    </select>
+
+</mapper>

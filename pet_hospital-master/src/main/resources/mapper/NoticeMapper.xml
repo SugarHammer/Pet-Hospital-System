@@ -1,0 +1,50 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjp.mapper.notice.NoticeMapper">
+    <select id="selectById" parameterType="Long" resultType="com.fjp.pojo.entity.notice.Notice">
+        select description
+        from notice
+        where Id = #{Id};
+    </select>
+    <select id="selectByNoticeQuery" parameterType="com.fjp.pojo.entity.notice.Notice"
+            resultType="com.fjp.pojo.dto.notice.NoticeDTO">
+        select notice.id,user.id userId,user.username,title,description,notice.add_time,notice.update_time
+        from notice join user on notice.user_id=user.id
+        where 1=1
+        <if test="id != null and id != ''">
+            and notice.id = #{id}
+        </if>
+
+        <if test="userId !=null and userId !=''">
+            and user_id = #{userId}
+        </if>
+
+        <if test="addTime !=null">
+            and date(notice.add_time) = #{addTime}
+        </if>
+
+        <if test="description !=null and description !=''">
+            and description like '%${description}%'
+        </if>
+
+        <if test="title !=null and title !=''">
+            and title like '%${title}%'
+        </if>
+    </select>
+
+    <insert id="addNotice" parameterType="com.fjp.pojo.entity.notice.Notice">
+        insert into notice(id, user_id, title, description, add_time, update_time)
+        value (#{id},#{userId},#{title},#{description},#{addTime},#{updateTime})
+    </insert>
+
+    <delete id="deleteNotice" parameterType="Long">
+        delete from notice
+        where id=#{id};
+    </delete>
+
+    <update id="updateNotice" parameterType="com.fjp.pojo.entity.notice.Notice">
+        update notice set title=#{title},description=#{description}
+        where id=#{id};
+    </update>
+</mapper>

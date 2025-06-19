@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjp.mapper.pet.PetMapper">
+    <select id="findAll" parameterType="com.fjp.pojo.query.pet.PetQuery" resultType="com.fjp.pojo.entity.pet.Pet">
+        select pet.* from pet,user
+        where pet.user_id = user.id
+        <if test="findID != null and findID != ''">
+            and user_id = #{findID}
+        </if>
+        <if test="name != null and name != ''">
+            and pet.name like concat('%',#{name},'%')
+        </if>
+        <if test="species != null and species != ''">
+            and species like concat('%',#{species},'%')
+        </if>
+        <if test="varieties != null and varieties != ''">
+            and varieties like concat('%', #{varieties}, '%')
+        </if>
+        <if test="addTime != null">
+            and date(pet.add_time) = #{addTime}
+        </if>
+        <if test="inHospital != null">
+            and in_hospital = #{inHospital}
+        </if>
+        <if test="userName != null and userName != ''">
+            and user.name like concat('%', #{userName}, '%')
+        </if>
+    </select>
+</mapper>
